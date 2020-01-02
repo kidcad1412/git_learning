@@ -80,3 +80,69 @@ $ git log #查看提交记录
 $ git reflog #查看所有历史记录（包括历史区回滚后）
 ```
 *从工作区提交到暂存区，从暂存区提交到历史区，这个过程其实都是复制一份内容，每个区域中都有这些信息，所以在更改内容的时候可以对比出修改了那些*
+
+从历史区回滚到之前版本：
+```
+$ git reset --hard xxx
+xxx是版本号（前七位或者全部）
+```
+# 3、 远程仓库
+## 3.1、 github
+### 3.1.1 settings
+- Profile 基本信息
+- Account 账户：username注册时用的那个，最好别改，变的太多了
+- Security 安全隐私：改变密码啥的
+- Emails 修改增加邮箱，需要校验
+- ...
+### 3.1.2 创建仓库
+头像旁边有个加号
+new repository
+
+*起个名字，然后进行描述，Public是所有人都可看到的，Private私有的（能不能看由owner定，之前收费现在也免费了）*
+*可选择初始仓库的时候是否包含readme文件*
+
+填完信息选*create repository*
+
+对仓库进行操作（在仓库中有个settings）
+
+- 删除仓库：settings -> options里面有各种管理选项，选择delete this repository
+- Collaborators：设置协作开发者（指定可操作此仓库的人）（直接输入github账号，add collaborator就可）
+- code ：可查看查看历史版本信息和分支信息（commit信息）
+
+## 3.2 本地仓库与远程仓库信息同步
+### 3.2.1 本地仓库关联远程仓库
+```
+#建立本地仓库与远程仓库的链接
+$ git remote -v #查看当前链接情况
+$ git remote add origin [Git 仓库地址] #Git仓库地址，是在github上创建仓库之后的ssh地址，或者是git地址，origin是随便起的一个名字，只不过一般都叫这个名字，写的时候不加[]
+
+$ git remote rm origin  #取消关联
+```
+### 3.2.2 本地仓库上传文件到远程
+```
+# 提交之前最好先拉取，origin是之前自己取的名
+$ git pull origin master
+
+# 把本地代码提交到远程仓（需要输入github的用户名密码）
+$ git push origin master
+
+```
+如果没有权限无法拉取，则需要进行key的配置：
+https://blog.csdn.net/weixin_44394753/article/details/91410463
+
+如果在pull的时候出现如下错误：(https://www.cnblogs.com/yiduobaozhiblog1/p/9125465.html)
+
+```
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+#先检查一下key是否添加，然后由于在github上初始化库的时候有readme文件存在，需要先pull一下
+
+$ git pull --rebase origin master
+#pull=fetch+merge
+
+然后再
+$ git push --set-upstream origin master
+```
+
